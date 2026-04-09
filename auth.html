@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canwinn - Login / Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow-x: hidden !important; background-color: #f8fafc; }
+        .master-footer { margin: 0 !important; width: 100% !important; }
+    </style>
+</head>
+<body>
+    <!-- Header / Navbar Redesign (Best to Best) -->
+    <header id="mainHeader" class="scrolled" style="position: fixed; top: 0; width: 100%; z-index: 2000; transition: var(--transition);">
+        <!-- Top Info Bar -->
+        <div id="topBar" style="background: var(--text); color: white; padding: 0.6rem 2%; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; transition: 0.4s; overflow: hidden; height: auto;">
+            <div style="display: flex; gap: 2rem;">
+                <span><i class="fa-solid fa-phone highlight" style="margin-right: 8px;"></i> Emergency: <strong style="color: white;">+91 999 000 8888</strong></span>
+                <span class="desktop-only"><i class="fa-solid fa-location-dot highlight" style="margin-right: 8px;"></i> 123 Healthcare Blvd, Medicity, IN</span>
+                <span><i class="fa-solid fa-clock highlight" style="margin-right: 8px;"></i> 24/7 Premium Care</span>
+            </div>
+            <div style="display: flex; gap: 1.5rem; cursor: pointer;">
+                <i class="fa-brands fa-facebook-f hover-grow"></i>
+                <i class="fa-brands fa-x-twitter hover-grow"></i>
+                <i class="fa-brands fa-linkedin-in hover-grow"></i>
+            </div>
+        </div>
+
+        <!-- Main Navigation Bar -->
+        <nav id="navbar" style="background: white; padding: 0.8rem 2%; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); border-bottom: 1px solid var(--secondary);">
+            <div class="logo" style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="window.location.href='index.html#hero'">
+                <img src="public/logo.png" alt="Canwinn Logo" style="height: 50px; width: auto; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="display: flex; flex-direction: column; line-height: 1.1;">
+                   <span style="font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; color: var(--text);">CANWINN<span class="highlight">CARE</span></span>
+                   <span style="font-size: 0.6rem; font-weight: 600; opacity: 0.6; letter-spacing: 2px; color: var(--text);">BEST TO BEST PROJECT</span>
+                </div>
+            </div>
+
+            <ul class="nav-links" id="navLinks" style="list-style: none; display: flex; gap: 2.2rem; align-items: center;">
+                <li><a href="index.html#hero" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">History</a></li>
+                <li><a href="index.html#specialities" class="nav-link">Specialities</a></li>
+                <li><a href="index.html#doctors" class="nav-link">Team</a></li>
+                <li><a href="index.html#appointment" class="nav-link-special">Book Slot</a></li>
+            </ul>
+
+            <div class="nav-actions" style="display: flex; align-items: center; gap: 1.5rem;">
+                <div class="mobile-toggle" id="mobileToggle">
+                   <div style="width: 25px; height: 3px; background: var(--text); margin-bottom: 5px; border-radius: 2px;"></div>
+                   <div style="width: 20px; height: 3px; background: var(--accent); margin-bottom: 5px; border-radius: 2px; margin-left: 5px;"></div>
+                   <div style="width: 25px; height: 3px; background: var(--text); border-radius: 2px;"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <style>
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-circle-1 { position: absolute; top: -10%; left: -10%; width: 40%; height: 40%; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); opacity: 0.4; filter: blur(80px); }
+        .auth-circle-2 { position: absolute; bottom: -10%; right: -10%; width: 40%; height: 40%; background: radial-gradient(circle, #6366f122 0%, transparent 70%); opacity: 0.4; filter: blur(80px); }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 40px;
+            width: 100%;
+            max-width: 500px;
+            padding: 4rem;
+            box-shadow: 0 50px 100px rgba(15, 23, 42, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-header { text-align: center; margin-bottom: 3rem; }
+        .auth-header h2 { font-size: 2.2rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
+        .auth-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .auth-form-group { margin-bottom: 1.5rem; }
+        .auth-form-group label { display: block; font-weight: 600; font-size: 0.85rem; color: var(--text); margin-bottom: 0.6rem; margin-left: 0.5rem; }
+        .auth-input {
+            width: 100%;
+            padding: 1.2rem;
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 18px;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            outline: none;
+        }
+        .auth-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1.3rem;
+            background: var(--text);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+        .auth-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 20px 40px var(--accent-glow); }
+
+        .auth-switch { text-align: center; margin-top: 2rem; font-size: 0.95rem; color: var(--text-muted); }
+        .auth-switch span { color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: underline; }
+    </style>
+
+    <div class="auth-wrapper">
+        <div class="auth-circle-1"></div>
+        <div class="auth-circle-2"></div>
+
+        <!-- Login Box -->
+        <div class="auth-card" id="loginBox">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Login to access your premium health records</p>
+            </div>
+            <form id="loginForm">
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="l-email" class="auth-input" placeholder="name@example.com" required>
+                </div>
+                <div class="auth-form-group">
+                    <label>Secure Password</label>
+                    <input type="password" id="l-password" class="auth-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="auth-btn">Authorize & Login <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 10px;"></i></button>
+            </form>
+            <div class="auth-switch">Don't have an account? <span onclick="toggleAuth()">Register Now</span></div>
+        </div>
+
+        <!-- Register Box -->
+        <div class="auth-card" id="registerBox" style="display: none;">
+            <div class="auth-header">
+                <h2>Join Canwinn</h2>
+                <p>Start your journey to 100% premium health</p>
+            </div>
+            <form id="registerForm">
+                <div class="auth-form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="r-name" class="auth-input" placeholder="John Doe" required>
+                </div>
+                <div class="auth-form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="r-email" class="auth-input" placeholder="name@example.com" required>
+                </div>
+                <div class="auth-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="r-phone" class="auth-input" placeholder="10-digit mobile number" required maxlength="10" minlength="10" pattern="[0-9]{10}">
+                </div>
+                <div class="auth-form-group">
+                    <label>Create Password</label>
+                    <input type="password" id="r-password" class="auth-input" placeholder="Min. 8 characters" required>
+                </div>
+                <button type="submit" class="auth-btn">Create Profile <i class="fa-solid fa-user-plus" style="margin-left: 10px;"></i></button>
+            </form>
+            <div class="auth-switch">Already have an account? <span onclick="toggleAuth()">Login instead</span></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAuth() {
+            const login = document.getElementById('loginBox');
+            const register = document.getElementById('registerBox');
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                register.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                register.style.display = 'block';
+            }
+        }
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('l-email').value;
+            const password = document.getElementById('l-password').value;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    localStorage.setItem('user', JSON.stringify(data));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert('Login Failed: ' + data.message);
+                }
+            } catch (err) {
+                alert('Error connecting to server');
+            }
+        });
+
+        // Handle Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('r-name').value;
+            const email = document.getElementById('r-email').value;
+            const phone = document.getElementById('r-phone').value;
+            const password = document.getElementById('r-password').value;
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone, password, role: 'Patient' })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    alert('Registration Successful! Please login.');
+                    toggleAuth();
+                } else {
+                    alert('Registration Failed: ' + data.message);
+                }
+            } catch (err) {
+                alert('Error connecting to server');
+            }
+        });
+    </script>
+    <!-- PRO MASTER FOOTER: BEST TO BEST -->
+    <footer class="master-footer">
+        <div class="footer-glow"></div>
+        <div class="footer-grid">
+            <div class="footer-logo-stack">
+                <img src="public/logo.png" alt="Canwinn Logo">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; letter-spacing: -1px;">CANWINN<span class="highlight">CARE</span></h3>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-top: 1rem;">Setting the gold standard in global healthcare since 2010. Experience 100% Transparency and Medical Excellence.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Quick Access</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#hero"><i class="fa-solid fa-chevron-right"></i> Home Overview</a></li>
+                    <li><a href="index.html#about"><i class="fa-solid fa-chevron-right"></i> Medical History</a></li>
+                    <li><a href="index.html#specialities"><i class="fa-solid fa-chevron-right"></i> Specialist Care</a></li>
+                    <li><a href="index.html#doctors"><i class="fa-solid fa-chevron-right"></i> Expert Team</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Legal & Trust</h4>
+                <ul class="footer-links">
+                    <li><a href="legal.html#privacy"><i class="fa-solid fa-shield-halved"></i> Data Privacy</a></li>
+                    <li><a href="legal.html#terms"><i class="fa-solid fa-file-contract"></i> Terms of Use</a></li>
+                    <li><a href="admin.html"><i class="fa-solid fa-user-lock"></i> Admin Access</a></li>
+                    <li><a href="auth.html"><i class="fa-solid fa-id-badge"></i> Patient Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-contact-card">
+                    <h4>24/7 Premium Care</h4>
+                    <h3>+91 999 000 8888</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Immediate medical assistance is just one call away. Zero wait time triage.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Canwinn Care Hospital. Crafted with 100% Medical Excellence. Best to Best.</p>
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // auth specific logic already there
+    </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canwinn - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #f1f5f9; }
+        .dashboard-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #0f172a;
+            color: white;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .sidebar-logo { display: flex; align-items: center; gap: 15px; margin-bottom: 2rem; }
+        .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .sidebar-link.active { background: var(--accent); color: white; box-shadow: 0 10px 20px var(--accent-glow); }
+        .sidebar-link:hover:not(.active) { background: rgba(255,255,255,0.05); color: white; }
+
+        /* Main Content */
+        .main-content { padding: 3rem 4rem; }
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3.5rem;
+        }
+        .user-meta h1 { font-size: 2rem; font-weight: 800; color: #1e293b; margin-bottom: 0.3rem; }
+        .user-meta p { color: #64748b; font-size: 0.95rem; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-bg);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .stat-value { font-size: 1.8rem; font-weight: 800; color: #1e293b; }
+        .stat-label { color: #64748b; font-size: 0.9rem; font-weight: 600; }
+
+        /* Content Card */
+        .content-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+        .card-header h3 { font-size: 1.4rem; font-weight: 700; color: #1e293b; }
+
+        /* Appointment Table UI */
+        .appt-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 120px;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .appt-date-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 0.8rem;
+            text-align: center;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .appt-date-box span { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; }
+        .appt-status {
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .status-badge.Confirmed { background: #dcfce7; color: #15803d; }
+        .status-badge.Pending { background: #fef9c3; color: #a16207; }
+
+        /* Premium File Button */
+        .file-btn {
+            background: linear-gradient(135deg, var(--accent), #4338ca);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+        .file-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, #4338ca, var(--accent));
+        }
+        .file-btn i { font-size: 1.1rem; }
+
+        .pulse-btn {
+            animation: btn-pulse 2s infinite;
+        }
+        @keyframes btn-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        @media (max-width: 1024px) {
+            .dashboard-wrapper { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main-content { padding: 2rem; }
+        }
+    </style>
+
+    <style>
+        /* Premium Portal Navbar */
+        .portal-navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 3rem;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 2rem;
+            z-index: 100;
+        }
+
+        .nav-search {
+            background: #f1f5f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 350px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .nav-search:focus-within { background: white; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .nav-search input { background: transparent; border: none; outline: none; width: 100%; font-size: 0.9rem; color: #1e293b; }
+
+        .nav-tools { display: flex; align-items: center; gap: 1.5rem; }
+        .tool-btn {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            border: 1px solid #f1f5f9;
+        }
+        .tool-btn:hover { background: #f8fafc; color: var(--accent); transform: translateY(-2px); }
+        .tool-btn .badge-dot {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .profile-stack { display: flex; align-items: center; gap: 12px; padding-left: 1rem; border-left: 1px solid #f1f5f9; }
+        .profile-info { text-align: right; }
+        .profile-info h4 { font-size: 0.95rem; font-weight: 700; color: #1e293b; line-height: 1; }
+        .profile-info p { font-size: 0.75rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
+    </style>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="public/logo.png" alt="Canwinn" style="height: 50px; border-radius: 50%;">
+                <span style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">CANWINN</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" onclick="showSection('appointments', this)" class="sidebar-link active"><i class="fa-solid fa-house"></i> Overview</a>
+                <a href="index.html#appointment" class="sidebar-link"><i class="fa-solid fa-calendar-plus"></i> New Booking</a>
+                <a href="#" onclick="showSection('records', this)" class="sidebar-link"><i class="fa-solid fa-file-medical"></i> Medical Records</a>
+                <a href="#" onclick="showSection('prescriptions', this)" class="sidebar-link"><i class="fa-solid fa-pills"></i> Prescriptions</a>
+                <a href="#" class="sidebar-link"><i class="fa-solid fa-user-gear"></i> Settings</a>
+            </nav>
+            <div style="margin-top: auto;">
+                <a href="#" onclick="logout()" class="sidebar-link" style="color: #ef4444;"><i class="fa-solid fa-power-off"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Premium Portal Navbar -->
+            <nav class="portal-navbar">
+                <div class="nav-search">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
+                    <input type="text" id="globalSearch" oninput="handleGlobalSearch(this.value)" placeholder="Search records, doctors, or reports...">
+                </div>
+
+                <div class="nav-tools">
+                    <div class="tool-btn" title="Medical Status">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="tool-btn" title="Messages">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span class="badge-dot"></span>
+                    </div>
+                    <div class="tool-btn" title="Patient Alerts">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="badge-dot"></span>
+                    </div>
+                    
+                    <div class="profile-stack">
+                        <div class="profile-info">
+                            <h4 id="userNameNav">Patient</h4>
+                            <p>Verified Profile</p>
+                        </div>
+                        <img src="" id="userAvatar" alt="Profile" style="width: 45px; height: 45px; border-radius: 12px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </nav>
+
+            <div class="user-meta" style="margin-bottom: 3.5rem;">
+                <h1>Welcome back, <span id="userName" style="color: var(--accent);">Citizen</span>!</h1>
+                <p>Monitor your health and schedule sessions with 100% transparency.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="stat-value" id="totalAppts">0</div>
+                    <div class="stat-label">Total Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e0e7ff; color: #4338ca;"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <div class="stat-value">98%</div>
+                    <div class="stat-label">Health Index</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fefce8; color: #a16207;"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-value">₹0.00</div>
+                    <div class="stat-label">Medical Balance</div>
+                </div>
+            </div>
+
+            <!-- SECTION: APPOINTMENTS -->
+            <div id="sectionAppointments" class="content-card">
+                <div class="card-header">
+                    <h3>Recent Appointments</h3>
+                    <button class="btn outline-btn" onclick="window.location.href='index.html#appointment'" style="padding: 0.5rem 1.2rem; font-size: 0.8rem;">Schedule New</button>
+                </div>
+                <div id="apptList">
+                    <div style="text-align: center; padding: 4rem; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Syncing with medical database...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: MEDICAL RECORDS -->
+            <div id="sectionRecords" class="content-card" style="display: none;">
+                <div class="card-header">
+                    <h3>Diagnostic History</h3>
+                    <button class="btn outline-btn" onclick="window.location.href='index.html#medical-records'" style="padding: 0.5rem 1.2rem; font-size: 0.8rem;">Upload New</button>
+                </div>
+                <div id="recordsListDisplay">
+                    <div style="text-align: center; padding: 4rem; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Fetching laboratory reports...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PRO MASTER FOOTER: BEST TO BEST -->
+    <footer class="master-footer">
+        <div class="footer-glow"></div>
+        <div class="footer-grid">
+            <div class="footer-logo-stack">
+                <img src="public/logo.png" alt="Canwinn Logo">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; letter-spacing: -1px;">CANWINN<span class="highlight">CARE</span></h3>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-top: 1rem;">Setting the gold standard in global healthcare since 2010. Experience 100% Transparency and Medical Excellence.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Quick Access</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#hero"><i class="fa-solid fa-chevron-right"></i> Home Overview</a></li>
+                    <li><a href="index.html#about"><i class="fa-solid fa-chevron-right"></i> Medical History</a></li>
+                    <li><a href="index.html#specialities"><i class="fa-solid fa-chevron-right"></i> Specialist Care</a></li>
+                    <li><a href="index.html#doctors"><i class="fa-solid fa-chevron-right"></i> Expert Team</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Institutional Links</h4>
+                <ul class="footer-links">
+                    <li><a href="legal.html#privacy"><i class="fa-solid fa-shield-halved"></i> Data Privacy</a></li>
+                    <li><a href="legal.html#terms"><i class="fa-solid fa-file-contract"></i> Terms of Use</a></li>
+                    <li><a href="admin.html"><i class="fa-solid fa-user-lock"></i> Admin Access</a></li>
+                    <li><a href="auth.html"><i class="fa-solid fa-id-badge"></i> Patient Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-contact-card">
+                    <h4>24/7 Premium Care</h4>
+                    <h3>+91 999 000 8888</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Immediate medical assistance is just one call away. Zero wait time triage.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Canwinn Care Hospital. Crafted with 100% Medical Excellence. Best to Best.</p>
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        const userStr = localStorage.getItem('user');
+        if(!userStr) window.location.href = 'auth.html';
+        
+        const user = JSON.parse(userStr);
+        document.getElementById('userName').innerText = user.name || 'Citizen';
+        document.getElementById('userNameNav').innerText = user.name || 'Citizen';
+        document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=0f172a&color=fff`;
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'auth.html';
+        }
+
+        function showSection(section, el) {
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            document.getElementById('sectionAppointments').style.display = section === 'appointments' ? 'block' : 'none';
+            document.getElementById('sectionRecords').style.display = section === 'records' ? 'block' : 'none';
+            document.getElementById('sectionPrescriptions').style.display = section === 'prescriptions' ? 'block' : 'none';
+            
+            if(section === 'records') fetchRecords();
+            if(section === 'prescriptions') fetchPrescriptions();
+        }
+
+        async function fetchPrescriptions() {
+            try {
+                const res = await fetch(`/api/medical-records/${user.id}`);
+                const result = await res.json();
+                const list = document.getElementById('prescListDisplay');
+                list.innerHTML = '';
+
+                // Filtering for records that have a prescription written
+                const prescs = result.data.filter(rec => rec.prescription && rec.prescription !== 'As per doctor consultation');
+
+                if(prescs.length === 0) {
+                    list.innerHTML = `<div style="text-align: center; padding: 3rem; background: #fdf2f2; border-radius: 20px; border: 2px dashed #fecaca;">
+                         <i class="fa-solid fa-capsules" style="font-size: 3rem; color: #fca5a5; margin-bottom: 1.5rem;"></i>
+                         <p style="color: #991b1b;">No active prescription schedules found.</p>
+                    </div>`;
+                    return;
+                }
+
+                prescs.forEach(rec => {
+                    const div = document.createElement('div');
+                    div.className = 'appt-row';
+                    div.innerHTML = `
+                        <div class="appt-date-box" style="background: #fef2f2; color: #dc2626;">
+                            <i class="fa-solid fa-prescription"></i>
+                        </div>
+                        <div style="padding-left: 1rem;">
+                            <h4 style="color: #1e293b; margin-bottom: 0.2rem;">${rec.diagnosis} - Prescription</h4>
+                            <p style="color: #64748b; font-size: 0.85rem;">Dr. Orders: ${rec.prescription}</p>
+                        </div>
+                        <div></div>
+                        <div style="text-align: right;">
+                             <button class="btn btn-primary" onclick="window.print()" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; border-radius: 10px; background: #dc2626;">
+                                <i class="fa-solid fa-download"></i> Save PDF
+                            </button>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+            } catch (err) {
+                 document.getElementById('prescListDisplay').innerHTML = '<p style="color: #ef4444; text-align: center;">Error loading pharmacy data.</p>';
+            }
+        }        let allRecords = []; // Global store for searching
+        let allAppointmentsList = []; // Global store for appointments
+
+        function handleGlobalSearch(query) {
+            const q = query.toLowerCase().trim();
+            if(!q) {
+                // Restore default view
+                document.getElementById('sectionAppointments').style.display = 'block';
+                document.getElementById('sectionRecords').style.display = 'none';
+                renderRecords(allRecords, false);
+                return;
+            }
+            
+            // Search Mode Activation
+            document.getElementById('sectionAppointments').style.display = 'none';
+            document.getElementById('sectionPrescriptions').style.display = 'none';
+            document.getElementById('sectionRecords').style.display = 'block';
+            
+            const resultsSection = document.getElementById('sectionRecords');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // 1. Filter Records (Matches)
+            const matchedRecords = allRecords.filter(rec => 
+                (rec.patientName && rec.patientName.toLowerCase().includes(q)) ||
+                (rec.diagnosis && rec.diagnosis.toLowerCase().includes(q)) ||
+                (rec.address && rec.address.toLowerCase().includes(q))
+            );
+
+            // 2. Filter Appointments (Matches)
+            const matchedAppts = allAppointmentsList.filter(appt => 
+                (appt.department && appt.department.toLowerCase().includes(q)) ||
+                (appt.time && appt.time.toLowerCase().includes(q))
+            );
+
+            renderUnifiedResults(matchedRecords, matchedAppts, q);
+        }
+
+        function renderUnifiedResults(records, appts, query) {
+            const list = document.getElementById('recordsListDisplay');
+            list.innerHTML = '';
+
+            if(records.length === 0 && appts.length === 0) {
+                list.innerHTML = `<div style="text-align: center; padding: 4rem; background: #fff5f5; border-radius: 20px; border: 2px dashed #feb2b2;">
+                     <i class="fa-solid fa-cloud-moon" style="font-size: 3rem; color: #f87171; margin-bottom: 1.5rem;"></i>
+                     <h3 style="color: #991b1b;">No Matches Found</h3>
+                     <p style="color: #64748b;">Try searching for a different patient name or report title.</p>
+                </div>`;
+                return;
+            }
+
+            // Results Header
+            list.innerHTML = `<div style="background: #eff6ff; padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e40af; font-weight: 700; border-left: 5px solid #3b82f6;">
+                <i class="fa-solid fa-bolt"></i> TOP MATCHES FOUND (${records.length + appts.length})
+            </div>`;
+
+            // Render Records First
+            records.forEach(rec => {
+                const div = document.createElement('div');
+                div.className = 'appt-row';
+                div.style.borderLeft = '4px solid #3b82f6';
+                div.style.background = 'white';
+                div.style.marginBottom = '10px';
+                div.style.borderRadius = '12px';
+                div.innerHTML = `
+                     <div class="appt-date-box" style="background: #3b82f6; color: white;">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div style="padding-left: 1.5rem;">
+                        <span style="background: #dbeafe; color: #1e40af; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 800;">REPORT MATCH</span>
+                        <h4 style="color: #1e293b; margin: 4px 0;">${rec.diagnosis}</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Patient: <strong>${rec.patientName || user.name || 'Verified Patient'}</strong> | DOB: ${rec.dob || 'Not Specified'}</p>
+                    </div>
+                    <div></div>
+                    <div style="text-align: right; padding-right: 15px;">
+                         <a href="${rec.attachments[0]}" target="_blank" class="file-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+
+            // Render Appointments
+            appts.forEach(appt => {
+                const div = document.createElement('div');
+                div.className = 'appt-row';
+                div.style.borderLeft = '4px solid #64748b';
+                div.style.background = '#f8fafc';
+                div.style.marginBottom = '10px';
+                div.style.borderRadius = '12px';
+                div.innerHTML = `
+                    <div class="appt-date-box" style="background: #f1f5f9; color: #64748b;">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div style="padding-left: 1.5rem;">
+                        <span style="background: #f1f5f9; color: #64748b; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 800;">APPOINTMENT MATCH</span>
+                        <h4 style="color: #475569; margin: 4px 0;">Slot: ${appt.time}</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Dept: ${appt.department} | Date: ${appt.date}</p>
+                    </div>
+                    <div></div>
+                    <div style="text-align: right; padding-right: 15px; font-weight: 700; color: #94a3b8;">
+                        Booked Slot
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        async function fetchRecords() {
+            try {
+                const res = await fetch(`/api/medical-records/${user.id}`);
+                const result = await res.json();
+                allRecords = result.data || [];
+                renderRecords(allRecords);
+            } catch (err) {
+                 document.getElementById('recordsListDisplay').innerHTML = '<p style="color: #ef4444; text-align: center;">Error loading records.</p>';
+            }
+        }
+
+        function renderRecords(records, isSearch = false) {
+            const list = document.getElementById('recordsListDisplay');
+            list.innerHTML = '';
+
+            if(records.length === 0) {
+                list.innerHTML = `<div style="text-align: center; padding: 3rem; background: #f8fafc; border-radius: 20px; border: 2px dashed #e2e8f0;">
+                     <i class="fa-solid fa-file-circle-xmark" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1.5rem;"></i>
+                     <p style="color: #94a3b8;">No medical reports found.</p>
+                </div>`;
+                return;
+            }
+
+            // Normal Mode: Shows Latest Highlighted and Archives in Accordion
+            const latest = records[0];
+            const latestDiv = document.createElement('div');
+            latestDiv.className = 'appt-row';
+            latestDiv.style.background = 'linear-gradient(to right, #f8fafc, white)';
+            latestDiv.style.borderLeft = '4px solid var(--accent)';
+            latestDiv.innerHTML = `
+                <div class="appt-date-box" style="background: var(--accent); color: white;">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <div style="padding-left: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                        <span style="background: #dcfce7; color: #15803d; font-size: 0.65rem; padding: 2px 8px; border-radius: 20px; font-weight: 800;">LATEST REPORT</span>
+                        <h4 style="color: #1e293b; margin:0;">${latest.diagnosis}</h4>
+                    </div>
+                    <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 4px;">Patient: <strong>${latest.patientName || user.name || 'Verified Patient'}</strong> | DOB: ${latest.dob || 'Not Specified'}</p>
+                </div>
+                <div></div>
+                <div style="text-align: right;">
+                    <a href="${latest.attachments[0]}" target="_blank" class="file-btn pulse-btn">
+                        <span>View Verified Report</span>
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </a>
+                </div>
+            `;
+            list.appendChild(latestDiv);
+
+            if(records.length > 1) {
+                const accordionHeader = document.createElement('div');
+                accordionHeader.innerHTML = `
+                    <div onclick="toggleAccordion()" style="margin-top: 2rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: #f1f5f9; border-radius: 15px; color: #475569; font-weight: 700;">
+                        <span><i class="fa-solid fa-clock-rotate-left" style="margin-right: 10px;"></i> View Previous History (${records.length - 1} Reports)</span>
+                        <i id="accordionIcon" class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div id="archives" style="display: none; transition: 0.3s; padding-top: 1rem;"></div>
+                `;
+                list.appendChild(accordionHeader);
+                const archiveContainer = document.getElementById('archives');
+
+                records.slice(1).forEach(rec => {
+                    const row = document.createElement('div');
+                    row.className = 'appt-row';
+                    row.style.borderBottom = '1px solid #f1f5f9';
+                    row.innerHTML = `
+                         <div class="appt-date-box" style="background: #eff6ff; color: #3b82f6; width: 50px;">
+                            <i class="fa-solid fa-file-medical"></i>
+                        </div>
+                        <div style="padding-left: 1rem;">
+                            <h4 style="color: #334155; margin-bottom: 2px; font-size: 0.95rem;">${rec.diagnosis}</h4>
+                            <p style="color: #94a3b8; font-size: 0.8rem;">Patient: ${rec.patientName || user.name || 'Verified Patient'} | ${rec.dob || ''}</p>
+                        </div>
+                        <div></div>
+                        <div style="text-align: right;">
+                            <a href="${rec.attachments[0]}" target="_blank" class="file-btn" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; background: #f1f5f9; color: #475569; box-shadow: none;">
+                                <i class="fa-solid fa-eye"></i> View
+                            </a>
+                        </div>
+                    `;
+                    archiveContainer.appendChild(row);
+                });
+            }
+        }
+
+        function toggleAccordion() {
+            const arc = document.getElementById('archives');
+            const icon = document.getElementById('accordionIcon');
+            const isHidden = arc.style.display === 'none';
+            arc.style.display = isHidden ? 'block' : 'none';
+            icon.className = isHidden ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down';
+        }
+
+        async function fetchAppointments() {
+            try {
+                const res = await fetch(`/api/appointments/my-appointments?patientId=${user.id}`);
+                const appts = await res.json();
+                allAppointmentsList = appts; // Store for search
+                
+                const list = document.getElementById('apptList');
+                document.getElementById('totalAppts').innerText = appts.length;
+                list.innerHTML = '';
+                
+                if(!appts || appts.length === 0) {
+                    list.innerHTML = `<div style="text-align: center; padding: 3rem; background: #f8fafc; border-radius: 20px; border: 2px dashed #e2e8f0;">
+                        <i class="fa-solid fa-calendar-xmark" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1.5rem;"></i>
+                        <p style="color: #94a3b8;">No medical sessions scheduled yet.</p>
+                    </div>`;
+                } else {
+                    // Sort descending by date/time (client side backup)
+                    appts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    appts.forEach((appt, idx) => {
+                        const date = new Date(appt.date);
+                        const day = isNaN(date.getDate()) ? '--' : date.getDate();
+                        const month = isNaN(date.getDate()) ? 'Slot' : date.toLocaleString('default', { month: 'short' });
+                        const statusClass = (appt.status || 'Pending').toLowerCase();
+
+                        const div = document.createElement('div');
+                        div.className = 'appt-row';
+                        if(idx === 0) div.style.borderLeft = '4px solid var(--accent)';
+                        
+                        div.innerHTML = `
+                            <div class="appt-date-box" style="${idx === 0 ? 'background: var(--accent); color: white;' : ''}">
+                                <span style="font-size: 0.65rem; opacity: 0.8; text-transform: uppercase;">${month}</span><br>
+                                <strong style="font-size: 1.2rem;">${day}</strong>
+                            </div>
+                            <div style="padding-left: 1.5rem; flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                                    <h4 style="color: #1e293b; margin: 0; font-size: 1rem;">${appt.department} Consultation</h4>
+                                    ${idx === 0 ? '<span style="background: #dcfce7; color: #15803d; font-size: 0.6rem; padding: 2px 10px; border-radius: 20px; font-weight: 800;">LATEST</span>' : ''}
+                                </div>
+                                <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 4px;">
+                                    <i class="fa-solid fa-clock" style="font-size: 0.75rem;"></i> Time: <strong>${appt.time}</strong> 
+                                    <span style="margin: 0 10px; color: #e2e8f0;">|</span> 
+                                    <i class="fa-solid fa-user-doctor" style="font-size: 0.75rem;"></i> Specialist: ${appt.doctor || 'Any Available'}
+                                </p>
+                                ${appt.message ? `
+                                    <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9; margin-top: 8px;">
+                                        <p style="color: #94a3b8; font-size: 0.75rem; margin: 0; font-style: italic;">
+                                            <i class="fa-solid fa-comment-medical"></i> Note: ${appt.message}
+                                        </p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="status-badge ${statusClass}" style="margin-bottom: 8px;">${appt.status || 'Pending'}</div>
+                                <p style="font-size: 0.65rem; color: #94a3b8;">Booked on ${new Date(appt.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        `;
+                        list.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                document.getElementById('apptList').innerHTML = '<p style="color: #ef4444; text-align: center;">Error syncing appointments.</p>';
+            }
+        }
+
+        fetchAppointments();
+        fetchRecords();
+    </script>
+</body>
+</html>

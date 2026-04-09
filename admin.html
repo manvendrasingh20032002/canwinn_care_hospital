@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canwinn - Admin Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-container {
+            padding: 100px 5%;
+            min-height: 80vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 2rem;
+            border: 1px solid var(--border);
+        }
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status.pending { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+        .status.confirmed { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    </style>
+    <style>
+        html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow-x: hidden !important; background-color: #f8fafc; }
+        .master-footer { margin: 0 !important; width: 100% !important; }
+    </style>
+</head>
+<body>
+    <!-- Header / Navbar Redesign (Best to Best) -->
+    <header id="mainHeader" class="scrolled" style="position: fixed; top: 0; width: 100%; z-index: 2000; transition: var(--transition);">
+        <!-- Top Info Bar -->
+        <div id="topBar" style="background: var(--text); color: white; padding: 0.6rem 2%; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; transition: 0.4s; overflow: hidden; height: auto;">
+            <div style="display: flex; gap: 2rem;">
+                <span><i class="fa-solid fa-phone highlight" style="margin-right: 8px;"></i> Emergency: <strong style="color: white;">+91 999 000 8888</strong></span>
+                <span class="desktop-only"><i class="fa-solid fa-location-dot highlight" style="margin-right: 8px;"></i> Management System Active</span>
+                <span><i class="fa-solid fa-clock highlight" style="margin-right: 8px;"></i> Admin Control Center</span>
+            </div>
+            <div style="display: flex; gap: 1.5rem; cursor: pointer;">
+                <i class="fa-brands fa-facebook-f hover-grow"></i>
+                <i class="fa-brands fa-x-twitter hover-grow"></i>
+                <i class="fa-brands fa-linkedin-in hover-grow"></i>
+            </div>
+        </div>
+
+        <!-- Main Navigation Bar -->
+        <nav id="navbar" style="background: white; padding: 0.8rem 2%; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); border-bottom: 1px solid var(--secondary);">
+            <div class="logo" style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="window.location.href='index.html#hero'">
+                <img src="public/logo.png" alt="Canwinn Logo" style="height: 50px; width: auto; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="display: flex; flex-direction: column; line-height: 1.1;">
+                   <span style="font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; color: var(--text);">CANWINN<span class="highlight">CARE</span></span>
+                   <span style="font-size: 0.6rem; font-weight: 600; opacity: 0.6; letter-spacing: 2px; color: var(--text);">ADMIN MANAGEMENT PORTAL</span>
+                </div>
+            </div>
+
+            <ul class="nav-links" id="navLinks" style="list-style: none; display: flex; gap: 2.2rem; align-items: center;">
+                <li><a href="index.html" class="nav-link">Main Site</a></li>
+                <li><a href="dashboard.html" class="nav-link">Patient Portal</a></li>
+                <li><a href="legal.html" class="nav-link">Legal Center</a></li>
+            </ul>
+
+            <div class="nav-actions" style="display: flex; align-items: center; gap: 1.5rem;">
+                <button class="btn btn-primary" onclick="window.location.href='index.html'" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;">
+                    Sign Out <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="header">
+            <h2>Hospital <span class="highlight">Management Portal</span></h2>
+        </div>
+
+        <h3>All Patient Appointments</h3>
+        
+        <div id="adminViewToggles" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <button onclick="switchView('appts')" id="tabAppts" class="btn" style="background: var(--accent); color: white; padding: 0.8rem 1.5rem; border-radius: 10px;"><i class="fa-solid fa-calendar-check"></i> Appointments</button>
+            <button onclick="switchView('records')" id="tabRecords" class="btn" style="background: white; color: var(--text); border: 1px solid var(--border); padding: 0.8rem 1.5rem; border-radius: 10px;"><i class="fa-solid fa-file-medical"></i> Medical Reports</button>
+        </div>
+        
+        <!-- UNIFIED ADMIN SEARCH -->
+        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; background: white; padding: 1.5rem; border-radius: 15px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+            <i class="fa-solid fa-magnifying-glass" style="color: var(--accent); font-size: 1.2rem;"></i>
+            <input type="text" id="adminSearch" oninput="handleAdminSearch(this.value)" placeholder="Search Name, Report Title, Phone, or Department..." style="width: 100%; border: none; outline: none; font-size: 1rem; color: var(--text);">
+        </div>
+
+        <div id="apptsSection">
+            <table id="adminTable">
+                <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Patient Identity</th>
+                        <th>Consultant</th>
+                        <th>Medical Note</th>
+                        <th>Current Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading system data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="recordsSection" style="display: none;">
+            <table id="recordsTable" style="width: 100%; border-collapse: collapse;">
+                <thead style="background: var(--primary-bg);">
+                    <tr>
+                        <th style="padding: 1.2rem; text-align: left;">Identity</th>
+                        <th style="padding: 1.2rem; text-align: left;">Diagnosis / Title</th>
+                        <th style="padding: 1.2rem; text-align: left;">Record Details</th>
+                        <th style="padding: 1.2rem; text-align: left;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="recordsTableBody">
+                    <!-- Dynamic Records -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let allAppointments = [];
+        let allRecords = [];
+        let currentMode = 'appts';
+
+        function switchView(mode) {
+            currentMode = mode;
+            document.getElementById('apptsSection').style.display = mode === 'appts' ? 'block' : 'none';
+            document.getElementById('recordsSection').style.display = mode === 'records' ? 'block' : 'none';
+            
+            // Toggle Tab Visuals
+            document.getElementById('tabAppts').style.background = mode === 'appts' ? 'var(--accent)' : 'white';
+            document.getElementById('tabAppts').style.color = mode === 'appts' ? 'white' : 'var(--text)';
+            document.getElementById('tabRecords').style.background = mode === 'records' ? 'var(--accent)' : 'white';
+            document.getElementById('tabRecords').style.color = mode === 'records' ? 'white' : 'var(--text)';
+            
+            if(mode === 'records' && allRecords.length === 0) fetchAllRecords();
+        }
+
+        function handleAdminSearch(query) {
+            const q = query.toLowerCase().trim();
+            if(!q) {
+                if(currentMode === 'appts') renderAdminTable(allAppointments);
+                else renderRecordsTable(allRecords);
+                return;
+            }
+
+            if(currentMode === 'appts') {
+                // Prioritize matches at the top
+                const matched = allAppointments.filter(appt => 
+                    (appt.name && appt.name.toLowerCase().includes(q)) ||
+                    (appt.phone && appt.phone.includes(q)) ||
+                    (appt.department && appt.department.toLowerCase().includes(q))
+                );
+                const others = allAppointments.filter(appt => !matched.includes(appt));
+                renderAdminTable([...matched, ...others], true); // true for search mode
+            } else {
+                const matched = allRecords.filter(rec => 
+                    (rec.patientName && rec.patientName.toLowerCase().includes(q)) ||
+                    (rec.diagnosis && rec.diagnosis.toLowerCase().includes(q)) ||
+                    (rec.address && rec.address.toLowerCase().includes(q))
+                );
+                const others = allRecords.filter(rec => !matched.includes(rec));
+                renderRecordsTable([...matched, ...others], true);
+            }
+        }
+
+        async function fetchAllRecords() {
+            try {
+                const res = await fetch('/api/medical-records/all/records');
+                const result = await res.json();
+                allRecords = result.data || [];
+                renderRecordsTable(allRecords);
+            } catch (error) {
+                document.getElementById('recordsTableBody').innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error loading historical archive</td></tr>';
+            }
+        }
+
+        function renderRecordsTable(records, isSearch = false) {
+            const tbody = document.getElementById('recordsTableBody');
+            tbody.innerHTML = '';
+            if(records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #94a3b8;">No diagnostic reports found matching search.</td></tr>';
+                return;
+            }
+            records.forEach((rec, idx) => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f1f5f9';
+                if(isSearch && idx < allRecords.filter(r => (r.patientName + r.diagnosis).toLowerCase().includes(document.getElementById('adminSearch').value.toLowerCase())).length) {
+                    tr.style.background = '#f0f9ff'; // Light blue for matches
+                    tr.style.borderLeft = '4px solid #3b82f6';
+                }
+                tr.innerHTML = `
+                    <td style="padding: 1.2rem;">
+                        <strong>${rec.patientName}</strong><br>
+                        <span style="font-size: 0.8rem; color: #94a3b8;">DOB: ${rec.dob}</span>
+                    </td>
+                    <td style="padding: 1.2rem; font-weight: 700; color: #1e293b;">${rec.diagnosis}</td>
+                    <td style="padding: 1.2rem; font-size: 0.85rem; color: #64748b;">
+                        <i class="fa-solid fa-location-dot"></i> ${rec.address}<br>
+                        Global ID: ${rec._id.slice(-6).toUpperCase()}
+                    </td>
+                    <td style="padding: 1.2rem;">
+                         <a href="${rec.attachments[0]}" target="_blank" class="file-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-file-pdf"></i> View File
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function fetchAllAppointments() {
+            try {
+                const res = await fetch('/api/appointments');
+                const result = await res.json();
+                allAppointments = result.data || [];
+                renderAdminTable(allAppointments);
+            } catch (error) {
+                document.getElementById('adminTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error connecting to Appointment API</td></tr>';
+            }
+        }
+
+        function renderAdminTable(appts, isSearch = false) {
+            const tableBody = document.getElementById('adminTableBody');
+            tableBody.innerHTML = '';
+            appts.forEach((appt, idx) => {
+                const tr = document.createElement('tr');
+                if(isSearch && idx < appts.filter(a => (a.name + a.department).toLowerCase().includes(document.getElementById('adminSearch').value.toLowerCase())).length) {
+                    tr.style.background = '#f0f9ff';
+                    tr.style.borderLeft = '4px solid #3b82f6';
+                }
+                const statusColor = appt.status === 'Confirmed' ? 'confirmed' : 'pending';
+                tr.innerHTML = `
+                    <td><strong>${appt.date}</strong><br><span style="color: #94a3b8; font-size: 0.85rem;">${appt.time}</span></td>
+                    <td><strong>${appt.name || 'Anonymous'}</strong><br><span style="color: #64748b; font-size: 0.85rem;">${appt.phone || ''}</span></td>
+                    <td><strong>${appt.doctor || 'General'}</strong><br><span style="color: #94a3b8; font-size: 0.85rem;">${appt.department || ''}</span></td>
+                    <td>${appt.message || 'Checkup'}</td>
+                    <td><span class="status ${statusColor}">${appt.status || 'Pending'}</span></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        fetchAllAppointments();
+    </script>
+    <!-- PRO MASTER FOOTER: BEST TO BEST -->
+    <footer class="master-footer">
+        <div class="footer-glow"></div>
+        <div class="footer-grid">
+            <div class="footer-logo-stack">
+                <img src="public/logo.png" alt="Canwinn Logo">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; letter-spacing: -1px;">CANWINN<span class="highlight">CARE</span></h3>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-top: 1rem;">Internal Management Dashboard. Authorized Access Only. Best to Best Control Center.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>System Status</h4>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fa-solid fa-server"></i> Node.js API: Active</a></li>
+                    <li><a href="#"><i class="fa-solid fa-database"></i> MongoDB: Connected</a></li>
+                    <li><a href="#"><i class="fa-solid fa-microchip"></i> Security: 256-bit</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Global Controls</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#hero"><i class="fa-solid fa-chevron-right"></i> Public Site</a></li>
+                    <li><a href="dashboard.html"><i class="fa-solid fa-chevron-right"></i> Patient Portal</a></li>
+                    <li><a href="legal.html"><i class="fa-solid fa-chevron-right"></i> Data Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-contact-card">
+                    <h4>Admin Support</h4>
+                    <h3>IT-HELPDESK</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Report system anomalies to the technical lead immediately.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Admin Management Portal. Canwinn Care. Best to Best.</p>
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // admin logic already there
+    </script>
+</body>
+</html>

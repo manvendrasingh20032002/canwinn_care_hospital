@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canwinn Care - Legal Documents</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .legal-header {
+            padding: 120px 5% 50px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border-bottom: 1px solid var(--border);
+        }
+        .legal-content {
+            padding: 5rem 5%;
+            max-width: 800px;
+            margin: auto;
+        }
+        .legal-section {
+            margin-bottom: 4rem;
+        }
+        .legal-section h2 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .legal-section h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: white;
+        }
+        .legal-section p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+        .legal-section ul {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            font-size: 1.05rem;
+        }
+    </style>
+    <style>
+        html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow-x: hidden !important; background-color: #f8fafc; }
+        .master-footer { margin: 0 !important; width: 100% !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar Redesign (Best to Best) -->
+    <header id="mainHeader" class="scrolled" style="position: fixed; top: 0; width: 100%; z-index: 2000; transition: var(--transition);">
+        <!-- Top Info Bar -->
+        <div id="topBar" style="background: var(--text); color: white; padding: 0.6rem 2%; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; transition: 0.4s; overflow: hidden; height: auto;">
+            <div style="display: flex; gap: 2rem;">
+                <span><i class="fa-solid fa-phone highlight" style="margin-right: 8px;"></i> Emergency: <strong style="color: white;">+91 999 000 8888</strong></span>
+                <span class="desktop-only"><i class="fa-solid fa-location-dot highlight" style="margin-right: 8px;"></i> 123 Healthcare Blvd, Medicity, IN</span>
+                <span><i class="fa-solid fa-clock highlight" style="margin-right: 8px;"></i> 24/7 Premium Care</span>
+            </div>
+            <div style="display: flex; gap: 1.5rem; cursor: pointer;">
+                <i class="fa-brands fa-facebook-f hover-grow"></i>
+                <i class="fa-brands fa-x-twitter hover-grow"></i>
+                <i class="fa-brands fa-linkedin-in hover-grow"></i>
+            </div>
+        </div>
+
+        <!-- Main Navigation Bar -->
+        <nav id="navbar" style="background: white; padding: 0.8rem 2%; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); border-bottom: 1px solid var(--secondary);">
+            <div class="logo" style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="window.location.href='index.html#hero'">
+                <img src="public/logo.png" alt="Canwinn Logo" style="height: 50px; width: auto; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="display: flex; flex-direction: column; line-height: 1.1;">
+                   <span style="font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; color: var(--text);">CANWINN<span class="highlight">CARE</span></span>
+                   <span style="font-size: 0.6rem; font-weight: 600; opacity: 0.6; letter-spacing: 2px; color: var(--text);">BEST TO BEST PROJECT</span>
+                </div>
+            </div>
+
+            <ul class="nav-links" id="navLinks" style="list-style: none; display: flex; gap: 2.2rem; align-items: center;">
+                <li><a href="index.html#hero" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">History</a></li>
+                <li><a href="index.html#specialities" class="nav-link">Specialities</a></li>
+                <li><a href="index.html#doctors" class="nav-link">Team</a></li>
+                <li><a href="auth.html" class="nav-link-special">Login</a></li>
+            </ul>
+
+            <div class="nav-actions" style="display: flex; align-items: center; gap: 1.5rem;">
+                <div class="mobile-toggle" id="mobileToggle">
+                   <div style="width: 25px; height: 3px; background: var(--text); margin-bottom: 5px; border-radius: 2px;"></div>
+                   <div style="width: 20px; height: 3px; background: var(--accent); margin-bottom: 5px; border-radius: 2px; margin-left: 5px;"></div>
+                   <div style="width: 25px; height: 3px; background: var(--text); border-radius: 2px;"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <header class="legal-header">
+        <h1 class="hero-title" style="font-size: 3.5rem;">Legal <span class="highlight">Information</span></h1>
+        <p class="section-desc">Detailed documentation regarding our data handling, platform usage, and your patient rights.</p>
+    </header>
+
+    <div class="legal-content">
+        <!-- Privacy Policy -->
+        <div id="privacy" class="legal-section">
+            <h2>Privacy Policy</h2>
+            <p>Last Updated: October 2026</p>
+            <p>At Canwinn Care, we take your privacy and medical information security incredibly seriously. This Privacy Policy details how we collect, process, and protect your personal data when you use our web platform and clinical services.</p>
+            
+            <h3>1. Data We Collect</h3>
+            <p>We log basic personal identifiable information (PII) such as your Name, Age, Email Address, and Phone Number. We also strictly safeguard Protected Health Information (PHI) like medical records, diagnostics, and prescriptions generated during telemedicine sessions or physical visits.</p>
+            
+            <h3>2. How We Use Data</h3>
+            <ul>
+                <li>To allocate you to the correct specialists efficiently.</li>
+                <li>To maintain your electronic medical history tracking for continuous care.</li>
+                <li>To dispatch automatic appointment scheduling alerts.</li>
+            </ul>
+
+            <h3>3. Data Security</h3>
+            <p>All sensitive HTTP traffic is fully encrypted using TLS/SSL protocols. Protected Medical constraints rely on stringent HIPAA compliant architecture within our database layer, guaranteeing secure data transmission directly out of the application.</p>
+        </div>
+
+        <!-- Terms of Use -->
+        <div id="terms" class="legal-section">
+            <h2>Terms of Use</h2>
+            <p>Last Updated: October 2026</p>
+            <p>Welcome to Canwinn Web Applications. By engaging with our site, you inherently agree to these terms.</p>
+            
+            <h3>1. Account Responsibilities</h3>
+            <p>All users requesting appointments via the patient portal are expected to provide accurate data. Creating fraudulent identities or attempting to bypass security systems restricts you indefinitely regarding online bookings.</p>
+            
+            <h3>2. Non-emergency Platform Nature</h3>
+            <p>While the website facilitates emergency contacts visually, the immediate digital contact forms and telehealth video connections are <strong>NOT a substitute</strong> for an immediate Emergency Rescue contact. Do not use standard email forms during critical life-threatening situations.</p>
+
+            <h3>3. Payment & Cancellations</h3>
+            <p>Users must submit cancellations 24-hours before the scheduled consultation to be eligible for a refund. Tele-consultations hold strict time blocks and failing to authenticate during the exact timestamp renders standard policies.</p>
+        </div>
+
+        <!-- Patient Rights -->
+        <div id="rights" class="legal-section">
+            <h2>Patient Rights & Responsibilities</h2>
+            <p>We are comprehensively committed to elevating your healthcare standards based fundamentally upon mutual respect.</p>
+            
+            <h3>1. You have the Right to:</h3>
+            <ul>
+                <li>Receive considerate, qualitative, and discrimination-free treatment inside this hospital regardless of demographics.</li>
+                <li>Achieve understandable details spanning across diagnosis, treatment variations, and ultimate potential outcomes to provide an "Informed Consent".</li>
+                <li>Demand complete and extensive confidentiality concerning your entire medical history.</li>
+            </ul>
+
+            <h3>2. Your Responsibilities include:</h3>
+            <ul>
+                <li>Engaging strictly within hospital ethical bounds and being courteous towards working health administrators.</li>
+                <li>Meeting your monetary obligations stemming from any scheduled procedures or diagnostic tasks.</li>
+                <li>Complying exactly with treatment instructions agreed upon primarily by you and your allocated medical professional.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PRO MASTER FOOTER: BEST TO BEST -->
+    <footer class="master-footer">
+        <div class="footer-glow"></div>
+        <div class="footer-grid">
+            <div class="footer-logo-stack">
+                <img src="public/logo.png" alt="Canwinn Logo">
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem; font-weight: 900; letter-spacing: -1px;">CANWINN<span class="highlight">CARE</span></h3>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-top: 1rem;">Setting the gold standard in global healthcare since 2010. Experience 100% Transparency and Medical Excellence.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Quick Access</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#hero"><i class="fa-solid fa-chevron-right"></i> Home Overview</a></li>
+                    <li><a href="index.html#about"><i class="fa-solid fa-chevron-right"></i> Medical History</a></li>
+                    <li><a href="index.html#specialities"><i class="fa-solid fa-chevron-right"></i> Specialist Care</a></li>
+                    <li><a href="index.html#doctors"><i class="fa-solid fa-chevron-right"></i> Expert Team</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Institutional Links</h4>
+                <ul class="footer-links">
+                    <li><a href="legal.html#privacy"><i class="fa-solid fa-shield-halved"></i> Data Privacy</a></li>
+                    <li><a href="legal.html#terms"><i class="fa-solid fa-file-contract"></i> Terms of Use</a></li>
+                    <li><a href="admin.html"><i class="fa-solid fa-user-lock"></i> Admin Access</a></li>
+                    <li><a href="auth.html"><i class="fa-solid fa-id-badge"></i> Patient Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-contact-card">
+                    <h4>24/7 Premium Care</h4>
+                    <h3>+91 999 000 8888</h3>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Immediate medical assistance is just one call away. Zero wait time triage.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Canwinn Care Hospital. Crafted with 100% Medical Excellence. Best to Best.</p>
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
